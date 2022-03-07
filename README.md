@@ -43,11 +43,11 @@ Once the logs of the docker program and the containers show that the application
 
  http://localhost:9999/layers/postalcodes?geometry=POLYGON((-3.69293574588795%2040.4192827141259,-3.69293574588795%2040.4303566393474,-3.67557441292882%2040.4303566393474,-3.67557441292882%2040.4192827141259,-3.69293574588795%2040.4192827141259))
 
-The first service return the union of all geometries in postal codes and adds all the turnover.
+The first service returns the union of all geometries in postal codes and adds all the turnover.
 
-The second service return turnover info for a given postal code. You can try changing the code path parameter and checking that responses are cached until the max size reached, so requesting with the same code it is faster after the first.
+The second service returns turnover info for a given postal code. You can try changing the code path parameter and checking that responses are cached until the max size reached, so requesting with the same code it is faster after the first.
 
-The third service can accept startdate and enddate query parameters, so try for example changing the geometry or adding date filters and check that results vary each time.
+The third service returns postal code geometries and its turnover. It accepts also startdate and enddate query parameters, so try for example changing the geometry or adding date filters and check that results vary each time.
 
 ## Improvements
 * Publish geometries in MVT (Mapbox vector tiles).
