@@ -1,5 +1,7 @@
 from flask import Flask
-from turnover_repository import getTurnoverInfoByPostalCodeId
+from flask import jsonify
+from flask import request
+import turnover_repository
 
 app = Flask(__name__)
 
@@ -9,40 +11,59 @@ def home():
 
 
 @app.route('/turnover/stats/sum', methods=['GET'])
-def accumulated(geometry: str):
+def accumulated(geometry, startdate, enddate):
+    """
+    Serves data for wireframe's widget at position 1. 
+    It accepts query params for geometry and date filters. Geometry is described as WKT and dates in yyyy-MM-dd format
+    It returns a single number as the total turnover between dates and postal codes within the geometry (map viewport)
+    """
     pass
 
-######## Endpoint
 
 @app.route('/turnover/stats/timeseries', methods=['GET'])
-def timeSeries(geometry: str):
-   pass
+def timeSeries(geometry, startdate, enddate):
+    """
+    Serves data for wireframe's widget at position 2. 
+    It accepts query params for geometry and date filters. Geometry is described as WKT and dates in yyyy-MM-dd format
+    It returns monthly aggregated turnover for each gender ordered by date ascending
+    """
+    pass
 
-######## Endpoint
 
-@app.route('/turnover/stats/byage', methods=['GET'])
-def get_turnover_by_age(geometry: str):
-   pass
+@app.route('/turnover/stats/byage>', methods=['GET'])
+def get_turnover_by_age(geometry, startdate, enddate):
+    """
+    Serves data for wireframe's widget at position 3. 
+    It accepts query params for geometry and date filters. Geometry is described as WKT and dates in yyyy-MM-dd format
+    It returns the turnover grouped by age group and gender ordered by age gruop ascending
+    """
+    pass
 
-######## Endpoint
 
 @app.route('/turnover/postalcode/<int:code>', methods=['GET'])
 def getInfo(code) -> dict :
-    return getTurnoverInfoByPostalCodeId(code)
+    """
+    Serves data for wireframe's map postal codes turnover layer on postal code click event. 
+    It requires the postal code
+    It returns the turnover info for that postal code aggregated by age group and gender
+    """
+    return turnover_repository.getTurnoverInfoByPostalCodeId(code)
 
-######## Endpoint
 
 @app.route('/layers/postalcodes', methods=['GET'])
-def postalCodes():
-    pass
+def postalCodes() -> str:
+    """
+    Serves data for wireframe's map postal codes turnover layer. 
+    It accepts query params for geometry and date filters. Geometry is described as WKT and dates in yyyy-MM-dd format
+    It returns the geometry, postal code and aggregated turnover for each postal code
+    """    
+    return jsonify(turnover_repository.getBoundaryPostalCodesStats(request.args.get("geometry"), request.args.get("startdate"), request.args.get("enddate")))
 
 
-######## Endpoint
-
-@app.route('/layers/region', methods=['GET'])
+@app.route('/layers/union', methods=['GET'])
 def region():
     pass
 
 
 
-app.run(port=9999, debug=True)
+app.run(host='0.0.0.0', port=9999, debug=True)
