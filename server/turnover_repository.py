@@ -55,4 +55,15 @@ def getBoundaryPostalCodesStats(geometry: str, startdate: str, enddate: str):
 
     return postal_codes_with_stats
     
+def getWholeRegionAndTurnover():
+    query = f"""
+        SELECT sum(ps.amount) as sum, st_asText(st_union(the_geom)) as geometry
+        FROM paystats ps
+        JOIN postal_codes pc using(postal_code_id)
+    """
+    wholeRegionTurnover = executeQuery(query)
+    return {
+        "sum": wholeRegionTurnover[0][0],
+        "geometry": wholeRegionTurnover[0][1]
 
+    }

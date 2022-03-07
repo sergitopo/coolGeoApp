@@ -30,7 +30,7 @@ def timeSeries(geometry, startdate, enddate):
     pass
 
 
-@app.route('/turnover/stats/byage>', methods=['GET'])
+@app.route('/turnover/stats/byage', methods=['GET'])
 def get_turnover_by_age(geometry, startdate, enddate):
     """
     Serves data for wireframe's widget at position 3. 
@@ -41,7 +41,7 @@ def get_turnover_by_age(geometry, startdate, enddate):
 
 
 @app.route('/turnover/postalcode/<int:code>', methods=['GET'])
-def getInfo(code) -> dict :
+def getInfo(code) -> dict:
     """
     Serves data for wireframe's map postal codes turnover layer on postal code click event. 
     It requires the postal code
@@ -60,9 +60,9 @@ def postalCodes() -> str:
     return jsonify(turnover_repository.getBoundaryPostalCodesStats(request.args.get("geometry"), request.args.get("startdate"), request.args.get("enddate")))
 
 
-@app.route('/layers/union', methods=['GET'])
-def region():
-    pass
+@app.route('/layers/postalcodes/union', methods=['GET'])
+def region() -> dict:
+    return turnover_repository.getWholeRegionAndTurnover()
 
 
 
