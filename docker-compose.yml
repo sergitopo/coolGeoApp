@@ -1,5 +1,17 @@
 version: '3.3'
 services:
+  server:
+    container_name: app_server
+    build: server
+    environment:
+      - POSTGRES_DB=carto_test
+      - POSTGRES_USER=carto_test
+      - POSTGRES_PASSWORD=carto_test
+      - POSTGRES_HOST=app_db
+    depends_on:
+      - app_db
+    ports:
+      - 9999:9999
   app_db:
     container_name: app_db
     build: db
